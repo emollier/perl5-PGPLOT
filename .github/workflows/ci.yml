@@ -24,6 +24,8 @@ jobs:
           - perl-version: '5.30'
             os: ubuntu-latest
             use-clang: true # use `clang` instead of `gcc` default
+          - perl-version: '5.30'
+            os: macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: shogo82148/actions-setup-perl@v1
@@ -43,7 +45,22 @@ jobs:
           echo "PERL5OPT=-I$(pwd)/build_aux -Mpdl_config_override" >> $GITHUB_ENV
 
       - name: Ubuntu packages
+        if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get -y update && sudo apt-get install build-essential gfortran pgplot5
+      - name: MacOS packages
+        if: matrix.os == 'macos-latest'
+        run: |
+          curl --remote-name https://astronomy.swin.edu.au/~karl/pgplot/pgplot531.tar.gz
+          curl --remote-name https://astronomy.swin.edu.au/~karl/pgplot/pgplotpatch.diff
+          tar xvf pgplot531.tar.gz
+          cd pgplotsrc
+          patch  -p 1 -i ../pgplotpatch.diff
+          SRC=$PWD
+          sudo mkdir /usr/local/pgplot
+          cd  /usr/local/pgplot
+          sudo cp $SRC/drivers.list .
+          sudo $SRC/makemake $SRC/ darwin gfortran_cc_BigSur
+          sudo make
       - run: cpanm -n Devel::CheckLib ExtUtils::F77 # configure reqs
       - name: Run release tests # before others as may install useful stuff
         if: ${{ matrix.release-test }}
