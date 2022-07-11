@@ -25,7 +25,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-11]
+        os: [ubuntu-latest, macos-latest ]
         perl-version: ['5.10', '5.14', '5.20', '5.30']
         install-pgplot: [ true, false ]
         # make macos-11 be part of the matrix so it gets the
@@ -37,6 +37,12 @@ jobs:
           - os: macos-11
             perl-version: '5.14'
           - os: macos-11
+            perl-version: '5.20'
+          - os: macos-latest
+            perl-version: '5.10'
+          - os: macos-latest
+            perl-version: '5.14'
+          - os: macos-latest
             perl-version: '5.20'
         include:
           - perl-version: '5.30'
