@@ -30,10 +30,14 @@ jobs:
         install-pgplot: [ true, false ]
         # make macos-11 be part of the matrix so it gets the
         # install-pgplot parameters, but only want it to test
-        # perl-version = 5.30. so, remove all of macos-11 here, and
-        # then include the match against perl-version below
+        # perl-version = 5.30. so, remove those we don't want.
         exclude:
           - os: macos-11
+            perl-version: '5.10'
+          - os: macos-11
+            perl-version: '5.14'
+          - os: macos-11
+            perl-version: '5.20'
         include:
           - perl-version: '5.30'
             os: ubuntu-latest
@@ -43,8 +47,6 @@ jobs:
           # NOTE pgplot does not yet have a build for windows
           #- perl-version: '5.30'
           #  os: windows-latest
-          - perl-version: '5.30'
-            os: macos-11
     steps:
       - uses: actions/checkout@v2
       - name: 'ci-dist: target-setup-perl'
