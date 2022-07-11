@@ -27,6 +27,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         perl-version: ['5.10', '5.14', '5.20']
+        install-pgplot: [ true, false ]
         include:
           - perl-version: '5.30'
             os: ubuntu-latest
@@ -49,6 +50,7 @@ jobs:
         uses: PDLPorters/devops/github-actions/install-gfortran@master
       - name: Install PGPLOT
         uses: PDLPorters/devops/github-actions/install-pgplot@master
+        if: matrix.install-pgplot
       - name: 'ci-dist: target-all'
         uses: PDLPorters/devops/github-actions/ci-dist@master
         with:
