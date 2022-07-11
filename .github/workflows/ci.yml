@@ -25,7 +25,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest ]
+        # os: [ubuntu-latest, macos-latest ]
+        os: [ macos-11 ]
         perl-version: ['5.10', '5.14', '5.20', '5.30']
         install-pgplot: [ true, false ]
         # make macos-11 be part of the matrix so it gets the
@@ -38,17 +39,11 @@ jobs:
             perl-version: '5.14'
           - os: macos-11
             perl-version: '5.20'
-          - os: macos-latest
-            perl-version: '5.10'
-          - os: macos-latest
-            perl-version: '5.14'
-          - os: macos-latest
-            perl-version: '5.20'
-        include:
-          - perl-version: '5.30'
-            os: ubuntu-latest
-            release-test: true
-            coverage: true
+        # include:
+        #   - perl-version: '5.30'
+        #     os: ubuntu-latest
+        #     release-test: true
+        #     coverage: true
           # Disable windows
           # NOTE pgplot does not yet have a build for windows
           #- perl-version: '5.30'
@@ -60,6 +55,10 @@ jobs:
         with:
           target-setup-perl: true
           perl-version: ${{ matrix.perl-version }}
+      - name: Install extras on mac os
+        if: runner.os == 'macOS'
+        run: |
+          brew install libxt libsm libice libpng libx11
       - name: Install gfortran
         uses: PDLPorters/devops/github-actions/install-gfortran@master
       - name: Install PGPLOT
