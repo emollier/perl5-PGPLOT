@@ -54,7 +54,7 @@ jobs:
         with:
           target-setup-perl: false
           target-install-dist-perl-deps: true
-          dist-perl-deps-configure: Devel::CheckLib ExtUtils::F77
+          dist-perl-deps-configure: Alien::Base::Wrapper Alien::PGPLOT
           target-test-release-testing: true
           target-test: true
           test-enable-release-testing: ${{ matrix.release-test }}
